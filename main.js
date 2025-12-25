@@ -1,11 +1,10 @@
 const { app, BrowserWindow, ipcMain, screen } = require('electron');
 const path = require('path');
 
-// Keep references to windows to prevent garbage collection
+// Keep reference to main window to prevent garbage collection
 let mainWindow = null;
-let topWindow = null;
 
-// Game state shared between windows
+// Game state
 let gameState = {
   credits: 0,
   currentBet: 1,
@@ -22,9 +21,10 @@ function createMainWindow() {
   const displays = screen.getAllDisplays();
   const primaryDisplay = displays[0];
   
+  // Single ultrawide portrait display setup
   mainWindow = new BrowserWindow({
-    width: 1920,
-    height: 1080,
+    width: primaryDisplay.bounds.width,
+    height: primaryDisplay.bounds.height,
     x: primaryDisplay.bounds.x,
     y: primaryDisplay.bounds.y,
     fullscreen: true,
@@ -46,36 +46,7 @@ function createMainWindow() {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
-    if (topWindow) topWindow.close();
     app.quit();
-  });
-}
-
-function createTopWindow() {
-  const displays = screen.getAllDisplays();
-  
-  // Use second display if available, otherwise position above main window
-  let targetDisplay = displays.length > 1 ? displays[1] : displays[0];
-  
-  topWindow = new BrowserWindow({
-    width: 1920,
-    height: 400,
-    x: targetDisplay.bounds.x,
-    y: displays.length > 1 ? targetDisplay.bounds.y : 0,
-    fullscreen: displays.length > 1,
-    frame: false,
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js')
-    },
-    backgroundColor: '#0a0a0a'
-  });
-
-  topWindow.loadFile('renderer/top-screen/index.html');
-  
-  topWindow.on('closed', () => {
-    topWindow = null;
   });
 }
 
@@ -105,11 +76,10 @@ async function initPaymentManager() {
   }
 }
 
-// Broadcast state to all windows
+// Broadcast state to main window
 function broadcastState() {
   const state = { ...gameState };
   if (mainWindow) mainWindow.webContents.send('state-update', state);
-  if (topWindow) topWindow.webContents.send('state-update', state);
 }
 
 // IPC Handlers
@@ -144,11 +114,6 @@ ipcMain.handle('start-spin', () => {
   gameState.isSpinning = true;
   broadcastState();
   
-  // Notify top screen of spin
-  if (topWindow) {
-    topWindow.webContents.send('spin-started');
-  }
-  
   return true;
 });
 
@@ -162,11 +127,6 @@ ipcMain.handle('end-spin', (event, winAmount) => {
   
   broadcastState();
   
-  // Notify top screen of win
-  if (topWindow && winAmount > 0) {
-    topWindow.webContents.send('win-event', { amount: winAmount, bet: gameState.currentBet });
-  }
-  
   return gameState;
 });
 
@@ -177,10 +137,6 @@ ipcMain.handle('trigger-jackpot', () => {
   gameState.jackpot = 10000; // Reset jackpot
   
   broadcastState();
-  
-  if (topWindow) {
-    topWindow.webContents.send('jackpot-won', jackpotAmount);
-  }
   
   return jackpotAmount;
 });
@@ -205,7 +161,6 @@ ipcMain.handle('cash-out', () => {
 // App lifecycle
 app.whenReady().then(async () => {
   createMainWindow();
-  createTopWindow();
   await initPaymentManager();
   
   // Initial state broadcast
@@ -222,7 +177,6 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (mainWindow === null) {
     createMainWindow();
-    createTopWindow();
   }
 });
 

@@ -1,4 +1,4 @@
-// Main Screen Controller - Enhanced for Realistic Casino Feel
+// Main Screen Controller - Enhanced for Single Portrait Ultrawide Display
 class MainScreenController {
   constructor() {
     this.slotMachine = null;
@@ -15,6 +15,16 @@ class MainScreenController {
       freeSpinsBet: 0,
       freeSpinsMultiplier: 2 // Wins multiplied during free spins
     };
+    
+    // Jackpot values (in cents)
+    this.jackpots = {
+      mega: 888888,   // $8,888.88
+      major: 100000,  // $1,000.00
+      minor: 25000    // $250.00
+    };
+    
+    // Recent wins for display
+    this.recentWins = [];
     
     this.reelAnimations = [];
     this.init();
@@ -61,6 +71,11 @@ class MainScreenController {
       // Populate paytable
       this.populatePaytable();
       
+      // Initialize jackpot ticker and recent wins
+      this.startJackpotTicker();
+      this.generateRecentWins();
+      this.updateJackpotDisplays();
+      
       // Initialize sound manager on first click (required by browsers)
       document.addEventListener('click', () => {
         if (window.soundManager && !window.soundManager.initialized) {
@@ -68,7 +83,7 @@ class MainScreenController {
         }
       }, { once: true });
       
-      console.log('Main screen initialized successfully');
+      console.log('Main screen initialized successfully (single portrait display mode)');
     } catch (error) {
       console.error('Failed to initialize main screen:', error);
       alert('Failed to initialize game. Check console for errors.');
@@ -84,6 +99,14 @@ class MainScreenController {
     this.winAmount = document.getElementById('win-amount');
     this.winDisplay = document.getElementById('win-display');
     this.jackpotAmount = document.getElementById('jackpot-amount');
+    
+    // Jackpot displays (from merged top-screen)
+    this.megaJackpotDisplay = document.getElementById('mega-jackpot');
+    this.majorJackpotDisplay = document.getElementById('major-jackpot');
+    this.minorJackpotDisplay = document.getElementById('minor-jackpot');
+    
+    // Wins carousel
+    this.winsCarousel = document.getElementById('wins-carousel');
     
     // Buttons
     this.spinBtn = document.getElementById('spin-btn');
@@ -262,8 +285,17 @@ class MainScreenController {
     this.state.credits = state.credits;
     this.state.currentBet = state.currentBet;
     
+    // Update jackpots based on main state (progressive from game)
+    if (state.jackpot) {
+      // Scale game jackpot to display jackpots
+      this.jackpots.mega = Math.max(this.jackpots.mega, state.jackpot * 5);
+      this.jackpots.major = Math.max(this.jackpots.major, state.jackpot);
+      this.jackpots.minor = Math.max(this.jackpots.minor, Math.floor(state.jackpot / 4));
+    }
+    
     this.updateDisplays();
     this.updateJackpot(state.jackpot);
+    this.updateJackpotDisplays();
   }
 
   setupReels() {
@@ -597,6 +629,11 @@ class MainScreenController {
     } else if (betMultiplier >= 5) {
       // Medium win celebration
       this.playSound('bigWin');
+    }
+    
+    // Add significant wins to recent wins display
+    if (betMultiplier >= 3) {
+      this.addPlayerWin(result.totalWin);
     }
   }
 
@@ -947,6 +984,111 @@ class MainScreenController {
       
       grid.appendChild(item);
     });
+  }
+
+  // ===== JACKPOT TICKER =====
+  
+  startJackpotTicker() {
+    // Slowly increment jackpots for visual effect
+    setInterval(() => {
+      // Random small increments (simulates other players contributing)
+      this.jackpots.mega += Math.floor(Math.random() * 50) + 10;
+      this.jackpots.major += Math.floor(Math.random() * 20) + 5;
+      this.jackpots.minor += Math.floor(Math.random() * 5) + 1;
+      
+      this.updateJackpotDisplays();
+    }, 2000);
+  }
+
+  updateJackpotDisplays() {
+    if (this.megaJackpotDisplay) {
+      this.megaJackpotDisplay.textContent = this.formatCurrency(this.jackpots.mega);
+    }
+    if (this.majorJackpotDisplay) {
+      this.majorJackpotDisplay.textContent = this.formatCurrency(this.jackpots.major);
+    }
+    if (this.minorJackpotDisplay) {
+      this.minorJackpotDisplay.textContent = this.formatCurrency(this.jackpots.minor);
+    }
+  }
+
+  formatCurrency(cents) {
+    return '$' + (cents / 100).toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+  // ===== RECENT WINS DISPLAY =====
+  
+  generateRecentWins() {
+    const luckyNames = [
+      'Lucky ***88', 'Fortune ***66', 'Dragon ***88', 'Phoenix ***18',
+      'Golden ***28', 'Jade ***68', 'Emperor ***88', 'Tiger ***38',
+      'Pearl ***58', 'Bamboo ***78'
+    ];
+    
+    const luckyAmounts = [168, 288, 388, 488, 588, 688, 888, 1288, 1688, 2888];
+    const times = ['2 mins ago', '5 mins ago', '8 mins ago', '12 mins ago', '15 mins ago', 
+                   '18 mins ago', '22 mins ago', '25 mins ago', '30 mins ago'];
+    
+    // Generate initial recent wins
+    this.recentWins = [];
+    for (let i = 0; i < 8; i++) {
+      this.recentWins.push({
+        player: luckyNames[Math.floor(Math.random() * luckyNames.length)],
+        prize: luckyAmounts[Math.floor(Math.random() * luckyAmounts.length)] * 100, // cents
+        time: times[i] || `${Math.floor(Math.random() * 30) + 5} mins ago`
+      });
+    }
+    
+    this.updateWinsCarousel();
+    this.startWinsRotation();
+  }
+
+  updateWinsCarousel() {
+    if (!this.winsCarousel) return;
+    
+    const visibleWins = this.recentWins.slice(0, 4);
+    
+    this.winsCarousel.innerHTML = visibleWins.map(win => `
+      <div class="win-card">
+        <div class="win-prize">${this.formatCurrency(win.prize)}</div>
+        <div class="win-time">${win.time}</div>
+        <div class="win-player">${win.player}</div>
+      </div>
+    `).join('');
+  }
+
+  startWinsRotation() {
+    // Rotate wins display every 5 seconds
+    setInterval(() => {
+      const first = this.recentWins.shift();
+      this.recentWins.push(first);
+      
+      // Animate transition
+      if (this.winsCarousel) {
+        this.winsCarousel.style.opacity = '0';
+        setTimeout(() => {
+          this.updateWinsCarousel();
+          this.winsCarousel.style.opacity = '1';
+        }, 300);
+      }
+    }, 5000);
+  }
+
+  addPlayerWin(amount) {
+    // Add player's win to recent wins display
+    this.recentWins.unshift({
+      player: 'YOU! 🎉',
+      prize: amount,
+      time: 'Just now'
+    });
+    
+    // Keep only last 8 wins
+    this.recentWins = this.recentWins.slice(0, 8);
+    
+    this.updateWinsCarousel();
   }
 
   handleKeyPress(e) {

@@ -1,4 +1,5 @@
 /* Asian Lucky Fortune Slots - Red & Gold Theme */
+/* Single Portrait Ultrawide Layout */
 :root {
   /* Red Theme Colors */
   --deep-red: #4a0a0a;
@@ -43,16 +44,192 @@ html, body {
   user-select: none;
 }
 
-/* Main Container */
+/* Main Container - Portrait Ultrawide Layout */
 .machine-container {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   position: relative;
   overflow: hidden;
   background: radial-gradient(ellipse at center, #2a0a0a 0%, #0d0202 100%);
+}
+
+.machine-container.portrait {
+  justify-content: flex-start;
+}
+
+/* Background pattern */
+.bg-effects {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: 
+    radial-gradient(ellipse at 30% 20%, rgba(139, 0, 0, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(212, 175, 55, 0.15) 0%, transparent 50%);
+}
+
+/* Chinese pattern overlay */
+.bg-effects::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 20px,
+      rgba(139, 0, 0, 0.1) 20px,
+      rgba(139, 0, 0, 0.1) 22px
+    );
+  opacity: 0.5;
+}
+
+/* ========================================
+   TOP SECTION - Jackpots & Banner
+   ======================================== */
+.top-section {
+  width: 100%;
+  flex-shrink: 0;
+  z-index: 10;
+  position: relative;
+  background: linear-gradient(180deg, rgba(26, 5, 5, 0.95) 0%, rgba(13, 2, 2, 0.9) 100%);
+  border-bottom: 3px solid var(--gold);
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Jackpots Section */
+.jackpots-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 20px;
+  flex-wrap: wrap;
+}
+
+.jackpot {
+  text-align: center;
+}
+
+.jackpot-frame {
+  background: linear-gradient(180deg, var(--crimson) 0%, var(--deep-red) 100%);
+  border: 3px solid var(--gold);
+  border-radius: 12px;
+  padding: 10px 25px;
+  box-shadow: 
+    0 0 20px rgba(212, 175, 55, 0.3),
+    inset 0 0 15px rgba(0,0,0,0.5);
+}
+
+.jackpot.mega .jackpot-frame {
+  background: linear-gradient(180deg, #cc0000 0%, #8b0000 50%, #5c0000 100%);
+  border-width: 4px;
+  padding: 12px 35px;
+  box-shadow: 
+    0 0 40px rgba(255, 215, 0, 0.4),
+    0 0 80px rgba(139, 0, 0, 0.4),
+    inset 0 0 20px rgba(0,0,0,0.3);
+}
+
+.jackpot-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  display: block;
+  letter-spacing: 0.1em;
+}
+
+.jackpot.mega .jackpot-label {
+  font-size: 0.9rem;
+}
+
+.jackpot-value {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--gold-shine);
+  text-shadow: 
+    0 0 15px var(--gold),
+    2px 2px 4px rgba(0,0,0,0.5);
+  display: block;
+}
+
+.jackpot.mega .jackpot-value {
+  font-size: 2.2rem;
+  animation: megaPulse 2s ease-in-out infinite;
+}
+
+@keyframes megaPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); text-shadow: 0 0 30px var(--gold), 0 0 50px var(--gold); }
+}
+
+/* Banner Section */
+.banner-section {
+  background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(139,0,0,0.4) 50%, rgba(0,0,0,0.6) 100%);
+  border-top: 2px solid var(--gold-dark);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+.scrolling-banner {
+  display: flex;
+  animation: scrollBanner 25s linear infinite;
+}
+
+@keyframes scrollBanner {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.banner-content {
+  display: flex;
+  white-space: nowrap;
+}
+
+.banner-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-shadow: 0 0 10px var(--gold);
+  padding: 0 30px;
+}
+
+.banner-spacer {
+  color: var(--bright-red);
+  padding: 0 15px;
+  font-size: 0.9rem;
+}
+
+/* Decorative lanterns */
+.lantern-deco {
+  position: absolute;
+  font-size: 2rem;
+  z-index: 15;
+  animation: lanternSway 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(255, 100, 50, 0.5));
+}
+
+.lantern-deco.left {
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lantern-deco.right {
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  animation-delay: 1.5s;
+}
+
+@keyframes lanternSway {
+  0%, 100% { transform: translateY(-50%) rotate(-5deg); }
+  50% { transform: translateY(-50%) rotate(5deg); }
 }
 
 /* Red Velvet Curtains */
@@ -128,15 +305,20 @@ html, body {
   background: radial-gradient(ellipse, rgba(255,100,100,0.15) 0%, transparent 70%);
 }
 
-/* Game Area */
+/* ========================================
+   GAME AREA - Center Section
+   ======================================== */
 .game-area {
-  width: 75%;
-  max-width: 1200px;
+  flex: 1;
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 10px;
   z-index: 10;
-  padding: 20px;
+  padding: 15px 5%;
+  min-height: 0; /* Allow shrinking in flex */
 }
 
 /* Gold Frame around Reels */
@@ -200,7 +382,7 @@ html, body {
 
 .reel {
   flex: 1;
-  height: 400px;
+  height: clamp(280px, 30vh, 450px);
   background: linear-gradient(180deg, 
     #1a0505 0%, 
     #3d1010 10%,
@@ -267,11 +449,11 @@ html, body {
 /* Symbol Styling - 3 visible rows */
 .symbol {
   width: 100%;
-  height: 133px;
+  height: calc(clamp(280px, 30vh, 450px) / 3);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 4.5rem;
+  font-size: clamp(3rem, 5vh, 4.5rem);
   position: relative;
 }
 
@@ -279,7 +461,7 @@ html, body {
 .card-symbol {
   font-family: 'Cinzel', serif;
   font-weight: 900;
-  font-size: 4.5rem;
+  font-size: clamp(3rem, 5vh, 4.5rem);
   text-shadow: 
     3px 3px 0 rgba(0,0,0,0.5),
     -1px -1px 0 rgba(255,255,255,0.3),
@@ -973,31 +1155,243 @@ html, body {
   box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
 }
 
-/* Responsive */
-@media (max-width: 1000px) {
+/* ========================================
+   BOTTOM SECTION - Recent Wins
+   ======================================== */
+.bottom-section {
+  width: 100%;
+  flex-shrink: 0;
+  z-index: 10;
+  background: linear-gradient(180deg, rgba(13, 2, 2, 0.9) 0%, rgba(26, 5, 5, 0.95) 100%);
+  border-top: 3px solid var(--gold);
+  box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.5);
+  padding: 15px 20px;
+}
+
+/* Recent Wins Section */
+.recent-wins {
+  width: 100%;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.header-text {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  text-shadow: 0 0 10px var(--gold-dark);
+}
+
+.wins-grid {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  transition: opacity 0.3s ease;
+}
+
+.win-card {
+  background: linear-gradient(135deg, rgba(139, 0, 0, 0.4) 0%, rgba(212, 175, 55, 0.15) 100%);
+  border: 2px solid var(--gold);
+  border-radius: 10px;
+  padding: 10px 20px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+  min-width: 120px;
+}
+
+.win-prize {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--gold-shine);
+  text-shadow: 0 0 10px var(--gold);
+}
+
+.win-time {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.5);
+  margin-top: 2px;
+}
+
+.win-player {
+  font-size: 0.7rem;
+  color: var(--white);
+  margin-top: 2px;
+}
+
+/* ========================================
+   RESPONSIVE - Portrait Ultrawide
+   ======================================== */
+
+/* Narrow portrait screens (typical ultrawide on side) */
+@media (max-aspect-ratio: 9/16) {
+  .jackpots-section {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .jackpot-frame {
+    padding: 8px 20px;
+  }
+  
+  .jackpot.mega .jackpot-frame {
+    padding: 10px 25px;
+  }
+  
+  .jackpot-value {
+    font-size: 1.2rem;
+  }
+  
+  .jackpot.mega .jackpot-value {
+    font-size: 1.8rem;
+  }
+  
+  .banner-section {
+    height: 35px;
+  }
+  
+  .banner-text {
+    font-size: 0.8rem;
+  }
+  
+  .wins-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .win-card {
+    width: 80%;
+    max-width: 250px;
+    padding: 8px 15px;
+  }
+}
+
+/* Standard portrait screens */
+@media (max-aspect-ratio: 3/4) {
   .game-area {
-    width: 90%;
+    padding: 10px 3%;
   }
   
   .curtain {
-    width: 8%;
+    width: 5%;
   }
   
-  .reel {
-    height: 300px;
-  }
-  
-  .symbol {
-    height: 100px;
-    font-size: 4rem;
+  .control-panel {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
   }
   
   .lines-btn {
-    width: 55px;
-    height: 65px;
+    width: 60px;
+    height: 70px;
   }
   
   .lines-num {
     font-size: 1.2rem;
+  }
+  
+  .lobby-btn,
+  .spin-btn {
+    width: 80px;
+    height: 70px;
+  }
+}
+
+/* Very tall screens */
+@media (min-height: 1200px) {
+  .jackpots-section {
+    padding: 20px 30px;
+  }
+  
+  .jackpot-value {
+    font-size: 1.8rem;
+  }
+  
+  .jackpot.mega .jackpot-value {
+    font-size: 2.5rem;
+  }
+  
+  .banner-section {
+    height: 50px;
+  }
+  
+  .banner-text {
+    font-size: 1rem;
+  }
+  
+  .bottom-section {
+    padding: 20px 30px;
+  }
+  
+  .win-card {
+    padding: 12px 25px;
+  }
+  
+  .win-prize {
+    font-size: 1.3rem;
+  }
+}
+
+/* General responsive fallback */
+@media (max-width: 800px) {
+  .game-area {
+    padding: 10px 2%;
+  }
+  
+  .curtain {
+    width: 3%;
+  }
+  
+  .reel-frame {
+    padding: 10px;
+    border-width: 5px;
+  }
+  
+  .info-bar {
+    flex-wrap: wrap;
+  }
+  
+  .info-display {
+    padding: 8px 12px;
+  }
+  
+  .info-value {
+    font-size: 1.5rem;
+  }
+  
+  .control-panel {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px;
+  }
+  
+  .lines-btn {
+    width: 50px;
+    height: 60px;
+  }
+  
+  .lines-num {
+    font-size: 1rem;
+  }
+  
+  .lines-text {
+    font-size: 0.5rem;
+  }
+  
+  .lobby-btn,
+  .spin-btn {
+    width: 70px;
+    height: 60px;
+  }
+  
+  .btn-label {
+    font-size: 0.75rem;
   }
 }
