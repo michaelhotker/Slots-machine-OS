@@ -1,0 +1,45 @@
+{
+  "name": "lucky-fortune-slots",
+  "version": "1.0.0",
+  "description": "A full-featured slot machine with dual-screen support and payment integration",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux"
+  },
+  "author": "Home Hobby Project",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "serialport": "^12.0.0",
+    "howler": "^2.2.4"
+  },
+  "build": {
+    "appId": "com.luckyfortune.slots",
+    "productName": "Lucky Fortune Slots",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!dist/**"
+    ],
+    "mac": {
+      "category": "public.app-category.games"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}
+

@@ -1,0 +1,119 @@
+{
+  "game": {
+    "name": "Lucky Fortune Slots",
+    "version": "1.0.0",
+    "theme": "asian-lucky",
+    
+    "reels": 5,
+    "rows": 3,
+    "paylines": 26,
+    
+    "betLevels": [1, 2, 3, 5, 10, 20, 50, 100],
+    "defaultBet": 1,
+    "maxBet": 100,
+    
+    "currency": "AUD",
+    "currencySymbol": "$",
+    "creditMultiplier": 100,
+    
+    "targetRTP": 95.0,
+    
+    "features": {
+      "wilds": true,
+      "scatters": true,
+      "freeSpins": true,
+      "bonusGame": false,
+      "progressiveJackpot": true,
+      "autoPlay": false
+    },
+    
+    "compliance": {
+      "jurisdiction": "WA",
+      "minimumRTP": 90.0,
+      "minimumGameCycle": 5.0,
+      "autoPlayEnabled": false,
+      "nearMissEnabled": false,
+      "reference": "https://www.dlgsc.wa.gov.au/department/publications/publication/electronic-gaming-machines-policy",
+      "disclaimer": "FOR PERSONAL/HOBBY USE ONLY. NOT FOR COMMERCIAL OPERATION. Spinning reel poker machines are prohibited in Western Australia for commercial gaming."
+    }
+  },
+
+  "display": {
+    "mainScreen": {
+      "width": 1920,
+      "height": 1080,
+      "fullscreen": true,
+      "display": 0
+    },
+    "topScreen": {
+      "width": 1920,
+      "height": 400,
+      "fullscreen": true,
+      "display": 1
+    },
+    "fps": 60,
+    "vsync": true
+  },
+
+  "payment": {
+    "demoMode": true,
+    "demoCredits": 1000,
+    
+    "billValidator": {
+      "enabled": true,
+      "port": "/dev/ttyUSB0",
+      "baudRate": 9600,
+      "protocol": "ID-003",
+      "acceptedBills": [100, 500, 1000, 2000, 5000, 10000]
+    },
+    
+    "coinAcceptor": {
+      "enabled": true,
+      "port": "/dev/ttyUSB1",
+      "baudRate": 9600,
+      "protocol": "SERIAL",
+      "acceptedCoins": [25, 100]
+    },
+    
+    "cardReader": {
+      "enabled": false,
+      "port": "/dev/ttyUSB2",
+      "cardType": "MAGNETIC"
+    }
+  },
+
+  "audio": {
+    "enabled": true,
+    "masterVolume": 0.7,
+    "sfxVolume": 0.8,
+    "musicVolume": 0.3,
+    "backgroundMusic": false
+  },
+
+  "jackpot": {
+    "enabled": true,
+    "seedAmount": 1000000,
+    "contributionRate": 0.01,
+    "megaMultiplier": 5,
+    "majorMultiplier": 1,
+    "minorMultiplier": 0.1,
+    "miniMultiplier": 0.01
+  },
+
+  "security": {
+    "requireAdminPassword": false,
+    "adminPassword": "admin123",
+    "lockOnIdle": false,
+    "idleTimeout": 300000,
+    "logTransactions": true,
+    "logPath": "./logs"
+  },
+
+  "attract": {
+    "enabled": true,
+    "timeout": 60000,
+    "showDemoSpins": true,
+    "showJackpotHighlight": true
+  }
+}
+

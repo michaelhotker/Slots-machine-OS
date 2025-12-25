@@ -1,0 +1,11 @@
+# Images Folder
+
+Place custom images here if needed.
+The default theme uses emoji symbols which don't require image files.
+
+For custom themes, you could add:
+- Custom symbol images (PNG with transparency)
+- Background images
+- Logo images
+- Button sprites
+

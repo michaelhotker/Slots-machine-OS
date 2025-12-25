@@ -1,0 +1,248 @@
+/* Top Screen - Asian Lucky Fortune Theme */
+:root {
+  /* Red Theme Colors */
+  --deep-red: #4a0a0a;
+  --maroon: #5c1515;
+  --crimson: #8b0000;
+  --bright-red: #cc0000;
+  
+  /* Gold Colors */
+  --gold: #d4af37;
+  --gold-light: #f0d875;
+  --gold-dark: #996515;
+  --gold-shine: #ffd700;
+  
+  --white: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(180deg, #1a0505 0%, #0d0202 100%);
+  user-select: none;
+}
+
+.top-screen {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background pattern */
+.bg-effects {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: 
+    radial-gradient(ellipse at 30% 30%, rgba(139, 0, 0, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 70%, rgba(212, 175, 55, 0.15) 0%, transparent 50%);
+}
+
+/* Chinese pattern overlay */
+.bg-effects::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 20px,
+      rgba(139, 0, 0, 0.1) 20px,
+      rgba(139, 0, 0, 0.1) 22px
+    );
+  opacity: 0.5;
+}
+
+/* Jackpots Section */
+.jackpots-section {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 25px;
+  z-index: 10;
+}
+
+.jackpot {
+  text-align: center;
+}
+
+.jackpot-frame {
+  background: linear-gradient(180deg, var(--crimson) 0%, var(--deep-red) 100%);
+  border: 4px solid var(--gold);
+  border-radius: 15px;
+  padding: 15px 40px;
+  box-shadow: 
+    0 0 30px rgba(212, 175, 55, 0.4),
+    inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.jackpot.mega .jackpot-frame {
+  background: linear-gradient(180deg, #cc0000 0%, #8b0000 50%, #5c0000 100%);
+  border-width: 5px;
+  padding: 20px 50px;
+  box-shadow: 
+    0 0 50px rgba(255, 215, 0, 0.5),
+    0 0 100px rgba(139, 0, 0, 0.5),
+    inset 0 0 30px rgba(0,0,0,0.3);
+}
+
+.jackpot-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  display: block;
+  letter-spacing: 0.1em;
+}
+
+.jackpot-value {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--gold-shine);
+  text-shadow: 
+    0 0 20px var(--gold),
+    2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.jackpot.mega .jackpot-value {
+  font-size: 3.5rem;
+  animation: megaPulse 2s ease-in-out infinite;
+}
+
+@keyframes megaPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); text-shadow: 0 0 40px var(--gold), 0 0 60px var(--gold); }
+}
+
+/* Banner Section */
+.banner-section {
+  background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(139,0,0,0.4) 50%, rgba(0,0,0,0.6) 100%);
+  border-top: 3px solid var(--gold);
+  border-bottom: 3px solid var(--gold);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  z-index: 10;
+}
+
+.scrolling-banner {
+  display: flex;
+  animation: scrollBanner 25s linear infinite;
+}
+
+@keyframes scrollBanner {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.banner-content {
+  display: flex;
+  white-space: nowrap;
+}
+
+.banner-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-shadow: 0 0 15px var(--gold);
+  padding: 0 40px;
+}
+
+.banner-spacer {
+  color: var(--bright-red);
+  padding: 0 20px;
+  font-size: 1.2rem;
+}
+
+/* Recent Wins Section */
+.recent-wins {
+  padding: 20px;
+  z-index: 10;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.header-text {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.25em;
+  text-shadow: 0 0 10px var(--gold-dark);
+}
+
+.wins-grid {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.win-card {
+  background: linear-gradient(135deg, rgba(139, 0, 0, 0.4) 0%, rgba(212, 175, 55, 0.15) 100%);
+  border: 2px solid var(--gold);
+  border-radius: 10px;
+  padding: 12px 30px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+}
+
+.win-prize {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--gold-shine);
+  text-shadow: 0 0 10px var(--gold);
+}
+
+.win-time {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.6);
+  margin-top: 3px;
+}
+
+.win-player {
+  font-size: 0.75rem;
+  color: var(--white);
+}
+
+/* Decorative lanterns */
+.lantern-deco {
+  position: absolute;
+  font-size: 3rem;
+  z-index: 5;
+  animation: lanternSway 3s ease-in-out infinite;
+}
+
+.lantern-deco.left {
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lantern-deco.right {
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  animation-delay: 1.5s;
+}
+
+@keyframes lanternSway {
+  0%, 100% { transform: translateY(-50%) rotate(-5deg); }
+  50% { transform: translateY(-50%) rotate(5deg); }
+}

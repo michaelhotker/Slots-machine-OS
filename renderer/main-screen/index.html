@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lucky Fortune - Asian Slots</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="machine-container">
+    <!-- Red curtains -->
+    <div class="curtain left"></div>
+    <div class="curtain right"></div>
+    
+    <!-- Spotlight effects -->
+    <div class="spotlight left-spot"></div>
+    <div class="spotlight right-spot"></div>
+
+    <!-- Main Game Area -->
+    <div class="game-area">
+      <!-- Gold Frame with Reels -->
+      <div class="reel-frame">
+        <div class="frame-corner top-left"></div>
+        <div class="frame-corner top-right"></div>
+        <div class="frame-corner bottom-left"></div>
+        <div class="frame-corner bottom-right"></div>
+        
+        <div class="reels-container">
+          <div class="reel" id="reel-1">
+            <div class="reel-strip"></div>
+          </div>
+          <div class="reel" id="reel-2">
+            <div class="reel-strip"></div>
+          </div>
+          <div class="reel" id="reel-3">
+            <div class="reel-strip"></div>
+          </div>
+          <div class="reel" id="reel-4">
+            <div class="reel-strip"></div>
+          </div>
+          <div class="reel" id="reel-5">
+            <div class="reel-strip"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Bar -->
+      <div class="info-bar">
+        <div class="info-buttons">
+          <button class="info-btn" id="sound-btn">
+            <span id="sound-icon">🔊</span>
+          </button>
+          <button class="info-btn" id="paytable-btn">
+            PAY<br>TABLE
+          </button>
+        </div>
+        <div class="info-display">
+          <span class="info-label">BALANCE</span>
+          <span class="info-value" id="credits-display">$10.00</span>
+        </div>
+        <div class="info-display bet-display">
+          <span class="info-label">BET</span>
+          <span class="info-value" id="bet-display">$0.26</span>
+        </div>
+        <div class="info-display win-display">
+          <span class="info-label">WIN</span>
+          <span class="info-value" id="win-amount">$0.00</span>
+        </div>
+      </div>
+
+      <!-- Control Panel -->
+      <div class="control-panel">
+        <button class="metal-btn lobby-btn" id="cash-out-btn">
+          <span class="btn-label">LOBBY</span>
+        </button>
+        
+        <button class="metal-btn lines-btn" id="lines-4">
+          <span class="lines-num">4</span>
+          <span class="lines-text">LINES</span>
+        </button>
+        <button class="metal-btn lines-btn" id="lines-8">
+          <span class="lines-num">8</span>
+          <span class="lines-text">LINES</span>
+        </button>
+        <button class="metal-btn lines-btn" id="lines-14">
+          <span class="lines-num">14</span>
+          <span class="lines-text">LINES</span>
+        </button>
+        <button class="metal-btn lines-btn" id="lines-20">
+          <span class="lines-num">20</span>
+          <span class="lines-text">LINES</span>
+        </button>
+        <button class="metal-btn lines-btn active" id="lines-26">
+          <span class="lines-num">26</span>
+          <span class="lines-text">LINES</span>
+        </button>
+        
+        <button class="metal-btn spin-btn" id="spin-btn">
+          <span class="btn-label">SPIN</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Hidden elements for compatibility -->
+    <div id="win-display" style="display:none;"></div>
+    <div id="total-bet-display" style="display:none;">26</div>
+    <div id="lines-display" style="display:none;">26</div>
+    <div id="jackpot-amount" style="display:none;">$10,000.00</div>
+    <button id="demo-btn" style="display:none;"></button>
+    <button id="bet-up-btn" style="display:none;"></button>
+    <button id="bet-down-btn" style="display:none;"></button>
+    <button id="max-bet-btn" style="display:none;"></button>
+    <button id="auto-btn" style="display:none;"></button>
+
+    <!-- Paytable overlay -->
+    <div class="paytable-overlay" id="paytable-overlay">
+      <div class="paytable-content">
+        <h2>PAYTABLE</h2>
+        <div class="paytable-grid" id="paytable-grid"></div>
+        <button class="close-paytable" id="close-paytable">✕</button>
+      </div>
+    </div>
+
+    <!-- Big win overlay -->
+    <div class="big-win-overlay" id="big-win-overlay">
+      <div class="big-win-content">
+        <div class="big-win-particles"></div>
+        <h2 class="big-win-title" id="big-win-title">BIG WIN!</h2>
+        <div class="big-win-amount" id="big-win-amount">0</div>
+      </div>
+    </div>
+    
+    <!-- Free Spins Bonus Overlay -->
+    <div class="free-spins-overlay" id="free-spins-overlay">
+      <div class="free-spins-content">
+        <div class="free-spins-particles"></div>
+        <div class="free-spins-dragon left">🐉</div>
+        <div class="free-spins-dragon right">🐉</div>
+        <h2 class="free-spins-title">🎰 FREE SPINS! 🎰</h2>
+        <div class="free-spins-awarded">8 FREE SPINS</div>
+        <div class="free-spins-multiplier">All wins x2!</div>
+        <div class="free-spins-counter">SPINS: 0 / 0</div>
+        <div class="free-spins-winnings">WON: $0.00</div>
+      </div>
+    </div>
+    
+    <!-- Compliance Disclaimer -->
+    <div class="compliance-disclaimer" id="compliance-disclaimer">
+      <div class="disclaimer-content">
+        <h3>⚠️ IMPORTANT NOTICE</h3>
+        <p><strong>FOR PERSONAL/HOBBY USE ONLY</strong></p>
+        <p>This software is designed for personal entertainment purposes only and is NOT intended for commercial gaming operations.</p>
+        <p>In Western Australia, poker machines with spinning reels are prohibited under the <em>Gaming and Wagering Commission Act 1987</em> and <em>Casino Control Act 1984</em>.</p>
+        <p style="font-size: 0.8rem; margin-top: 15px;">
+          This game has been modified to comply with WA EGM standards where possible:<br>
+          ✓ Minimum 90% RTP (actual: ~95%)<br>
+          ✓ Auto-play disabled<br>
+          ✓ Near-miss displays disabled<br>
+          ✓ Minimum 5 second game cycle
+        </p>
+        <button class="disclaimer-btn" id="accept-disclaimer">I UNDERSTAND - CONTINUE</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../src/sounds/soundManager.js"></script>
+  <script src="../../src/game/symbols.js"></script>
+  <script src="../../src/game/paytable.js"></script>
+  <script src="../../src/game/slotMachine.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
