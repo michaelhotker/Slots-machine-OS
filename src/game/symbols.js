@@ -1,11 +1,11 @@
-// Asian Lucky Fortune Slot Machine Symbols
-// Tuned for ~90% RTP with lower hit frequency (fewer but bigger wins)
+// All Aboard Dynamite Dash Slot Machine Symbols
+// Mining and train themed symbols matching the game
 
 const SYMBOLS = [
   {
     id: 'wild',
-    name: 'Gold Ingot',
-    icon: '🥇',
+    name: 'Miner',
+    icon: '👨⛏️',
     weight: 6,
     isWild: true,
     pays: {
@@ -16,8 +16,8 @@ const SYMBOLS = [
   },
   {
     id: 'scatter',
-    name: 'Yin Yang',
-    icon: '☯️',
+    name: 'Dynamite',
+    icon: '💣',
     weight: 5,
     isScatter: true,
     pays: {
@@ -27,13 +27,11 @@ const SYMBOLS = [
     }
   },
   {
-    id: 'seven',
-    name: 'King',
-    icon: '👑',
-    display: 'K',
-    isCard: true,
-    cardColor: 'red',
-    weight: 10,
+    id: 'train',
+    name: 'Train',
+    icon: '🚂',
+    weight: 8,
+    isTrain: true, // Special symbol for All Aboard feature
     pays: {
       3: 68,
       4: 500,
@@ -41,13 +39,10 @@ const SYMBOLS = [
     }
   },
   {
-    id: 'bar',
-    name: 'Queen',
-    icon: '💎',
-    display: 'Q',
-    isCard: true,
-    cardColor: 'gold',
-    weight: 12,
+    id: 'mine',
+    name: 'Mine Entrance',
+    icon: '⛰️',
+    weight: 10,
     pays: {
       3: 50,
       4: 290,
@@ -55,13 +50,10 @@ const SYMBOLS = [
     }
   },
   {
-    id: 'bell',
-    name: 'Ace',
-    icon: '🅰️',
-    display: 'A',
-    isCard: true,
-    cardColor: 'purple',
-    weight: 14,
+    id: 'goldCart',
+    name: 'Gold Cart',
+    icon: '🚛',
+    weight: 12,
     pays: {
       3: 42,
       4: 210,
@@ -69,13 +61,10 @@ const SYMBOLS = [
     }
   },
   {
-    id: 'horseshoe',
-    name: 'Ten',
-    icon: '🔟',
-    display: '10',
-    isCard: true,
-    cardColor: 'purple',
-    weight: 18,
+    id: 'gemSack',
+    name: 'Gem Sack',
+    icon: '💎',
+    weight: 14,
     pays: {
       3: 30,
       4: 125,
@@ -83,10 +72,10 @@ const SYMBOLS = [
     }
   },
   {
-    id: 'clover',
-    name: 'Orange',
-    icon: '🍊',
-    weight: 20,
+    id: 'helmet',
+    name: 'Miner Helmet',
+    icon: '⛑️',
+    weight: 16,
     pays: {
       3: 24,
       4: 92,
@@ -94,10 +83,10 @@ const SYMBOLS = [
     }
   },
   {
-    id: 'cherry',
-    name: 'Tangerine',
-    icon: '🍑',
-    weight: 22,
+    id: 'pickaxe',
+    name: 'Pickaxe',
+    icon: '⛏️',
+    weight: 18,
     pays: {
       3: 19,
       4: 68,
@@ -105,10 +94,10 @@ const SYMBOLS = [
     }
   },
   {
-    id: 'lemon',
-    name: 'Fortune Cookie',
-    icon: '🥠',
-    weight: 24,
+    id: 'shovel',
+    name: 'Shovel',
+    icon: '🔨',
+    weight: 20,
     pays: {
       3: 15,
       4: 50,
@@ -116,10 +105,13 @@ const SYMBOLS = [
     }
   },
   {
-    id: 'orange',
-    name: 'Lantern',
-    icon: '🏮',
-    weight: 24,
+    id: 'q',
+    name: 'Queen',
+    icon: 'Q',
+    display: 'Q',
+    isCard: true,
+    cardColor: 'gold',
+    weight: 22,
     pays: {
       3: 15,
       4: 50,
@@ -127,25 +119,31 @@ const SYMBOLS = [
     }
   },
   {
-    id: 'grape',
-    name: 'Dragon',
-    icon: '🐉',
-    weight: 16,
+    id: 'j',
+    name: 'Jack',
+    icon: 'J',
+    display: 'J',
+    isCard: true,
+    cardColor: 'gold',
+    weight: 24,
     pays: {
-      3: 22,
-      4: 75,
-      5: 235
+      3: 12,
+      4: 42,
+      5: 150
     }
   },
   {
-    id: 'watermelon',
-    name: 'Lucky Cat',
-    icon: '🐱',
-    weight: 14,
+    id: 'a',
+    name: 'Ace',
+    icon: 'A',
+    display: 'A',
+    isCard: true,
+    cardColor: 'gold',
+    weight: 26,
     pays: {
-      3: 26,
-      4: 85,
-      5: 335
+      3: 10,
+      4: 35,
+      5: 125
     }
   }
 ];

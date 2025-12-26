@@ -1,5 +1,5 @@
 // Payline Definitions for 5-Reel Slot Machine
-// 20 paylines covering all possible winning patterns
+// 50 paylines covering all possible winning patterns (All Aboard Dynamite Dash)
 
 // Each payline is defined by positions [reel1Row, reel2Row, reel3Row, reel4Row, reel5Row]
 // Rows: 0 = top, 1 = middle, 2 = bottom (3 rows visible)
@@ -37,7 +37,39 @@ const PAYLINES = [
   // Step patterns
   { id: 18, positions: [0, 0, 1, 2, 2], name: 'Step Down' },
   { id: 19, positions: [2, 2, 1, 0, 0], name: 'Step Up' },
-  { id: 20, positions: [1, 0, 1, 2, 1], name: 'Wave' }
+  { id: 20, positions: [1, 0, 1, 2, 1], name: 'Wave' },
+  
+  // Additional patterns for 50 lines
+  { id: 21, positions: [0, 1, 0, 2, 1], name: 'Zigzag 1' },
+  { id: 22, positions: [2, 1, 2, 0, 1], name: 'Zigzag 2' },
+  { id: 23, positions: [1, 1, 0, 1, 2], name: 'Step Pattern 1' },
+  { id: 24, positions: [1, 1, 2, 1, 0], name: 'Step Pattern 2' },
+  { id: 25, positions: [0, 2, 1, 0, 2], name: 'Cross Pattern 1' },
+  { id: 26, positions: [2, 0, 1, 2, 0], name: 'Cross Pattern 2' },
+  { id: 27, positions: [1, 0, 2, 1, 0], name: 'Arc Pattern 1' },
+  { id: 28, positions: [1, 2, 0, 1, 2], name: 'Arc Pattern 2' },
+  { id: 29, positions: [0, 0, 2, 0, 1], name: 'Slope Pattern 1' },
+  { id: 30, positions: [2, 2, 0, 2, 1], name: 'Slope Pattern 2' },
+  { id: 31, positions: [1, 2, 2, 0, 0], name: 'Curve Pattern 1' },
+  { id: 32, positions: [1, 0, 0, 2, 2], name: 'Curve Pattern 2' },
+  { id: 33, positions: [0, 1, 2, 0, 1], name: 'Wave Pattern 1' },
+  { id: 34, positions: [2, 1, 0, 2, 1], name: 'Wave Pattern 2' },
+  { id: 35, positions: [0, 2, 2, 1, 0], name: 'Complex 1' },
+  { id: 36, positions: [2, 0, 0, 1, 2], name: 'Complex 2' },
+  { id: 37, positions: [1, 0, 2, 0, 1], name: 'Alternating 1' },
+  { id: 38, positions: [1, 2, 0, 2, 1], name: 'Alternating 2' },
+  { id: 39, positions: [0, 1, 1, 2, 0], name: 'Stair Pattern 1' },
+  { id: 40, positions: [2, 1, 1, 0, 2], name: 'Stair Pattern 2' },
+  { id: 41, positions: [0, 0, 0, 1, 2], name: 'Top Heavy' },
+  { id: 42, positions: [2, 2, 2, 1, 0], name: 'Bottom Heavy' },
+  { id: 43, positions: [1, 1, 0, 0, 1], name: 'Center Top' },
+  { id: 44, positions: [1, 1, 2, 2, 1], name: 'Center Bottom' },
+  { id: 45, positions: [0, 2, 0, 1, 2], name: 'Extreme 1' },
+  { id: 46, positions: [2, 0, 2, 1, 0], name: 'Extreme 2' },
+  { id: 47, positions: [1, 0, 1, 1, 2], name: 'Mixed 1' },
+  { id: 48, positions: [1, 2, 1, 1, 0], name: 'Mixed 2' },
+  { id: 49, positions: [0, 1, 2, 2, 1], name: 'Final Pattern 1' },
+  { id: 50, positions: [2, 1, 0, 0, 1], name: 'Final Pattern 2' }
 ];
 
 // Calculate win for a specific payline

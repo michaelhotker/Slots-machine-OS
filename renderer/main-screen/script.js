@@ -7,20 +7,28 @@ class MainScreenController {
       currentBet: 1,
       isSpinning: false,
       autoPlay: false,
-      // Free Spins Bonus Feature
+      // Free Spins Bonus Feature (Dynamite Dash)
       freeSpinsMode: false,
       freeSpinsRemaining: 0,
       freeSpinsTotal: 0,
       freeSpinsWinnings: 0,
       freeSpinsBet: 0,
-      freeSpinsMultiplier: 2 // Wins multiplied during free spins
+      freeSpinsMultiplier: 1, // No multiplier, but increased wilds
+      // All Aboard Feature
+      allAboardMode: false,
+      allAboardSpinsRemaining: 0,
+      allAboardGrid: Array(15).fill(null), // 5x3 grid
+      allAboardTotalWon: 0,
+      allAboardFilledPositions: 0
     };
     
-    // Jackpot values (in cents)
+    // Jackpot values (in cents) - All Aboard Dynamite Dash
     this.jackpots = {
-      mega: 888888,   // $8,888.88
-      major: 100000,  // $1,000.00
-      minor: 25000    // $250.00
+      grand: 950000,  // $9,500.00 - Grand Jackpot
+      mega: 400000,   // $4,000.00 - Mega Bonus
+      maxi: 100000,   // $1,000.00 - Maxi Bonus
+      major: 20000,   // $200.00 - Major Bonus
+      mini: 10000     // $100.00 - Mini Bonus
     };
     
     // Recent wins for display
@@ -100,10 +108,16 @@ class MainScreenController {
     this.winDisplay = document.getElementById('win-display');
     this.jackpotAmount = document.getElementById('jackpot-amount');
     
-    // Jackpot displays (from merged top-screen)
-    this.megaJackpotDisplay = document.getElementById('mega-jackpot');
-    this.majorJackpotDisplay = document.getElementById('major-jackpot');
-    this.minorJackpotDisplay = document.getElementById('minor-jackpot');
+    // Jackpot displays - All Aboard Dynamite Dash
+    this.grandJackpotDisplay = document.getElementById('grand-jackpot');
+    this.megaBonusDisplay = document.getElementById('mega-bonus');
+    this.maxiBonusDisplay = document.getElementById('maxi-bonus');
+    this.majorBonusDisplay = document.getElementById('major-bonus');
+    this.miniBonusDisplay = document.getElementById('mini-bonus');
+    
+    // All Aboard overlay
+    this.allAboardOverlay = document.getElementById('all-aboard-overlay');
+    this.allAboardGrid = document.getElementById('all-aboard-grid');
     
     // Wins carousel
     this.winsCarousel = document.getElementById('wins-carousel');
@@ -192,14 +206,8 @@ class MainScreenController {
       });
     }
     
-    // Lines selection buttons
-    const lineButtons = [4, 8, 14, 20, 26];
-    lineButtons.forEach(lines => {
-      const btn = document.getElementById(`lines-${lines}`);
-      if (btn) {
-        btn.addEventListener('click', (e) => { this.setLines(lines); e.target.blur(); });
-      }
-    });
+    // Lines are fixed at 50 for All Aboard Dynamite Dash
+    // No line selection buttons needed
     
     // Keyboard controls
     document.addEventListener('keydown', (e) => this.handleKeyPress(e));
@@ -344,14 +352,14 @@ class MainScreenController {
       this.creditsDisplay.textContent = this.formatMoney(this.state.credits);
     }
     
-    // Update bet display (show as dollars - bet per line * 20 lines)
+    // Update bet display (show as dollars - bet per line * 50 lines)
     if (this.betDisplay) {
-      this.betDisplay.textContent = this.formatMoney(this.state.currentBet * 20);
+      this.betDisplay.textContent = this.formatMoney(this.state.currentBet * 50);
     }
     
     // Update total bet display
     if (this.totalBetDisplay) {
-      this.totalBetDisplay.textContent = this.formatMoney(this.state.currentBet * 20);
+      this.totalBetDisplay.textContent = this.formatMoney(this.state.currentBet * 50);
     }
     
     // Update win display
@@ -361,7 +369,7 @@ class MainScreenController {
     
     // Update button states
     if (this.spinBtn) {
-      this.spinBtn.disabled = this.state.credits < this.state.currentBet * 20 || this.state.isSpinning;
+      this.spinBtn.disabled = this.state.credits < this.state.currentBet * 50 || this.state.isSpinning;
     }
   }
 
@@ -408,7 +416,7 @@ class MainScreenController {
   async spin() {
     if (this.state.isSpinning) return;
     
-    const totalBet = this.state.currentBet * 20;
+    const totalBet = this.state.currentBet * 50;
     
     // During free spins, don't deduct credits
     if (!this.state.freeSpinsMode) {
@@ -485,9 +493,32 @@ class MainScreenController {
     // Update display with new credits
     this.updateDisplays();
     
-    // Check for free spins trigger (3+ scatter symbols)
+    // Check for All Aboard feature trigger (6+ train symbols)
+    // Can trigger in base game or during free spins
+    const trainCount = this.countTrainSymbols(result.reels);
+    if (trainCount >= 6 && !this.state.allAboardMode) {
+      await this.triggerAllAboard(result.reels, trainCount);
+    }
+    
+    // Check for free spins trigger (3+ dynamite scatter symbols)
     if (result.triggersBonus) {
       await this.triggerFreeSpins(result.scatterWin ? result.scatterWin.count : 3);
+    }
+    
+    // Handle All Aboard feature
+    if (this.state.allAboardMode) {
+      this.state.allAboardSpinsRemaining--;
+      this.updateAllAboardDisplay();
+      
+      // Check for additional trains during All Aboard (resets spins)
+      const newTrainCount = this.countTrainSymbols(result.reels);
+      if (newTrainCount > 0) {
+        await this.processAllAboardTrains(result.reels, newTrainCount);
+      }
+      
+      if (this.state.allAboardSpinsRemaining <= 0) {
+        await this.endAllAboard();
+      }
     }
     
     // Handle free spins countdown
@@ -505,9 +536,12 @@ class MainScreenController {
     this.spinBtn.disabled = false;
     this.spinBtn.classList.remove('spinning');
     
-    // Auto-continue free spins after a delay
+    // Auto-continue free spins or All Aboard after a delay
     if (this.state.freeSpinsMode && this.state.freeSpinsRemaining > 0) {
       await this.delay(1500);
+      this.spin();
+    } else if (this.state.allAboardMode && this.state.allAboardSpinsRemaining > 0) {
+      await this.delay(2000);
       this.spin();
     }
     
@@ -807,14 +841,14 @@ class MainScreenController {
   // ===== FREE SPINS BONUS FEATURE =====
   
   async triggerFreeSpins(scatterCount) {
-    // Calculate free spins awarded based on scatter count
+    // Dynamite Dash: 3 dynamite scatters = 9 free spins
     const freeSpinsTable = {
-      3: 8,   // 3 scatters = 8 free spins
+      3: 9,   // 3 scatters = 9 free spins (Dynamite Dash)
       4: 15,  // 4 scatters = 15 free spins  
       5: 25   // 5 scatters = 25 free spins
     };
     
-    const spinsAwarded = freeSpinsTable[scatterCount] || 8;
+    const spinsAwarded = freeSpinsTable[scatterCount] || 9;
     
     // If already in free spins, add to existing (retrigger)
     if (this.state.freeSpinsMode) {
@@ -846,9 +880,9 @@ class MainScreenController {
       const countEl = overlay.querySelector('.free-spins-awarded');
       const multiplierEl = overlay.querySelector('.free-spins-multiplier');
       
-      if (titleEl) titleEl.textContent = '🎰 FREE SPINS! 🎰';
+      if (titleEl) titleEl.textContent = '💣 DYNAMITE DASH FREE SPINS! 💣';
       if (countEl) countEl.textContent = `${spinsAwarded} FREE SPINS`;
-      if (multiplierEl) multiplierEl.textContent = `All wins x${this.state.freeSpinsMultiplier}!`;
+      if (multiplierEl) multiplierEl.textContent = 'Increased Wilds!';
       
       overlay.classList.add('active');
       
@@ -1001,14 +1035,20 @@ class MainScreenController {
   }
 
   updateJackpotDisplays() {
-    if (this.megaJackpotDisplay) {
-      this.megaJackpotDisplay.textContent = this.formatCurrency(this.jackpots.mega);
+    if (this.grandJackpotDisplay) {
+      this.grandJackpotDisplay.textContent = this.formatCurrency(this.jackpots.grand);
     }
-    if (this.majorJackpotDisplay) {
-      this.majorJackpotDisplay.textContent = this.formatCurrency(this.jackpots.major);
+    if (this.megaBonusDisplay) {
+      this.megaBonusDisplay.textContent = this.formatCurrency(this.jackpots.mega);
     }
-    if (this.minorJackpotDisplay) {
-      this.minorJackpotDisplay.textContent = this.formatCurrency(this.jackpots.minor);
+    if (this.maxiBonusDisplay) {
+      this.maxiBonusDisplay.textContent = this.formatCurrency(this.jackpots.maxi);
+    }
+    if (this.majorBonusDisplay) {
+      this.majorBonusDisplay.textContent = this.formatCurrency(this.jackpots.major);
+    }
+    if (this.miniBonusDisplay) {
+      this.miniBonusDisplay.textContent = this.formatCurrency(this.jackpots.mini);
     }
   }
 
@@ -1143,6 +1183,190 @@ class MainScreenController {
   async showNearMiss(nearMiss) {
     // DISABLED FOR WA COMPLIANCE - Near-miss displays are prohibited
     // Do nothing
+  }
+
+  // ===== ALL ABOARD FEATURE =====
+  
+  countTrainSymbols(reels) {
+    let count = 0;
+    for (let reel = 0; reel < reels.length; reel++) {
+      for (let row = 0; row < reels[reel].length; row++) {
+        if (reels[reel][row].isTrain || reels[reel][row].id === 'train') {
+          count++;
+        }
+      }
+    }
+    return count;
+  }
+  
+  async triggerAllAboard(reels, trainCount) {
+    this.state.allAboardMode = true;
+    this.state.allAboardSpinsRemaining = 3; // 3 bonus spins
+    this.state.allAboardGrid = Array(15).fill(null); // Reset grid (5x3)
+    this.state.allAboardTotalWon = 0;
+    this.state.allAboardFilledPositions = 0;
+    
+    // Play bonus sound
+    this.playSound('bonus');
+    
+    // Show All Aboard overlay
+    if (this.allAboardOverlay) {
+      this.allAboardOverlay.classList.add('active');
+      this.updateAllAboardGrid();
+    }
+    
+    // Process initial trains
+    await this.processAllAboardTrains(reels, trainCount);
+    
+    // Wait a bit before starting spins
+    await this.delay(3000);
+    
+    if (this.allAboardOverlay) {
+      this.allAboardOverlay.classList.remove('active');
+    }
+  }
+  
+  async processAllAboardTrains(reels, trainCount) {
+    // Find train positions and transform them to coins
+    // Grid is 5 columns (reels) x 3 rows, indexed left-to-right, top-to-bottom
+    const trainPositions = [];
+    for (let reel = 0; reel < reels.length; reel++) {
+      for (let row = 0; row < reels[reel].length; row++) {
+        if (reels[reel][row].isTrain || reels[reel][row].id === 'train') {
+          // Grid index: row 0-2, reel 0-4
+          // Index = reel * 3 + row (each reel has 3 rows)
+          const gridIndex = reel * 3 + row;
+          trainPositions.push({ reel, row, gridIndex });
+        }
+      }
+    }
+    
+    // Reveal coins for each train position
+    for (const pos of trainPositions) {
+      if (!this.state.allAboardGrid[pos.gridIndex]) {
+        // Reveal coin value
+        const coinValue = this.getCoinValue();
+        this.state.allAboardGrid[pos.gridIndex] = coinValue;
+        this.state.allAboardFilledPositions++;
+        this.state.allAboardTotalWon += coinValue;
+        
+        // Animate coin reveal
+        await this.revealCoin(pos.gridIndex, coinValue);
+        
+        // Check for Grand Jackpot (all 15 positions filled)
+        if (this.state.allAboardFilledPositions >= 15) {
+          await this.awardGrandJackpot();
+        }
+      }
+    }
+    
+    // Check if we got more trains (reset spins)
+    if (trainCount > 0) {
+      this.state.allAboardSpinsRemaining = 3; // Reset to 3 spins
+    }
+    
+    this.updateAllAboardDisplay();
+  }
+  
+  getCoinValue() {
+    // Random coin values - can be prizes or jackpot multipliers
+    const values = [
+      1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000
+    ];
+    return values[Math.floor(Math.random() * values.length)];
+  }
+  
+  async revealCoin(gridIndex, value) {
+    const cell = this.allAboardGrid?.children[gridIndex];
+    if (cell) {
+      cell.classList.add('filled');
+      cell.textContent = this.formatMoney(value);
+      this.playSound('coin');
+      await this.delay(300);
+    }
+  }
+  
+  updateAllAboardGrid() {
+    if (!this.allAboardGrid) return;
+    
+    this.allAboardGrid.innerHTML = '';
+    
+    for (let i = 0; i < 15; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'all-aboard-cell';
+      if (this.state.allAboardGrid[i]) {
+        cell.classList.add('filled');
+        cell.textContent = this.formatMoney(this.state.allAboardGrid[i]);
+      }
+      this.allAboardGrid.appendChild(cell);
+    }
+  }
+  
+  updateAllAboardDisplay() {
+    if (this.allAboardOverlay) {
+      const spinsEl = document.getElementById('all-aboard-spins-count');
+      const totalEl = document.getElementById('all-aboard-total');
+      
+      if (spinsEl) {
+        spinsEl.textContent = this.state.allAboardSpinsRemaining;
+      }
+      if (totalEl) {
+        totalEl.textContent = this.formatMoney(this.state.allAboardTotalWon);
+      }
+    }
+    
+    this.updateAllAboardGrid();
+  }
+  
+  async awardGrandJackpot() {
+    // Award Grand Jackpot when all positions are filled
+    const grandJackpot = this.jackpots.grand;
+    this.state.allAboardTotalWon += grandJackpot;
+    this.state.credits += grandJackpot;
+    
+    this.playSound('jackpot');
+    
+    // Show Grand Jackpot celebration
+    if (this.bigWinOverlay) {
+      if (this.bigWinTitle) {
+        this.bigWinTitle.textContent = 'GRAND JACKPOT!';
+      }
+      if (this.bigWinAmount) {
+        this.bigWinAmount.textContent = this.formatMoney(grandJackpot);
+      }
+      this.bigWinOverlay.classList.add('active');
+      await this.delay(5000);
+      this.bigWinOverlay.classList.remove('active');
+    }
+    
+    this.updateDisplays();
+  }
+  
+  async endAllAboard() {
+    // Award total winnings
+    this.state.credits += this.state.allAboardTotalWon;
+    
+    // Play celebration sound
+    if (this.state.allAboardTotalWon > 0) {
+      this.playSound('megaWin');
+    }
+    
+    // Show final summary
+    if (this.allAboardOverlay) {
+      this.allAboardOverlay.classList.add('active');
+      await this.delay(4000);
+      this.allAboardOverlay.classList.remove('active');
+    }
+    
+    // Reset All Aboard state
+    this.state.allAboardMode = false;
+    this.state.allAboardSpinsRemaining = 0;
+    this.state.allAboardGrid = Array(15).fill(null);
+    this.state.allAboardTotalWon = 0;
+    this.state.allAboardFilledPositions = 0;
+    
+    this.updateDisplays();
+    this.showMessage('ALL ABOARD COMPLETE!');
   }
 
   delay(ms) {

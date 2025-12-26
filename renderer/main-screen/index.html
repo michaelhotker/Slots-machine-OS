@@ -3,77 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lucky Fortune - Asian Slots</title>
+  <title>All Aboard Dynamite Dash</title>
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="machine-container portrait">
-    <!-- Background effects -->
-    <div class="bg-effects"></div>
+  <div class="machine-container">
+    <!-- Sunset Background -->
+    <div class="sunset-background"></div>
     
-    <!-- Red curtains -->
-    <div class="curtain left"></div>
-    <div class="curtain right"></div>
-    
-    <!-- Spotlight effects -->
-    <div class="spotlight left-spot"></div>
-    <div class="spotlight right-spot"></div>
-
-    <!-- Top Section - Jackpots -->
+    <!-- Top Section - Grand Jackpot -->
     <div class="top-section">
-      <!-- Decorative lanterns -->
-      <div class="lantern-deco left">🏮</div>
-      <div class="lantern-deco right">🏮</div>
-
-      <!-- Jackpots display -->
-      <div class="jackpots-section">
-        <div class="jackpot minor">
-          <div class="jackpot-frame">
-            <span class="jackpot-label">MINOR</span>
-            <span class="jackpot-value" id="minor-jackpot">$250.00</span>
-          </div>
-        </div>
-        <div class="jackpot mega">
-          <div class="jackpot-frame">
-            <span class="jackpot-label">🐉 GRAND FORTUNE 🐉</span>
-            <span class="jackpot-value" id="mega-jackpot">$8,888.88</span>
-          </div>
-        </div>
-        <div class="jackpot major">
-          <div class="jackpot-frame">
-            <span class="jackpot-label">MAJOR</span>
-            <span class="jackpot-value" id="major-jackpot">$1,000.00</span>
-          </div>
-        </div>
+      <div class="grand-jackpot-banner">
+        <div class="grand-jackpot-label">GRAND JACKPOT</div>
+        <div class="grand-jackpot-amount" id="grand-jackpot">$9,500.00</div>
       </div>
+    </div>
 
-      <!-- Animated banner area -->
-      <div class="banner-section">
-        <div class="scrolling-banner">
-          <div class="banner-content">
-            <span class="banner-text">🐉 LUCKY FORTUNE AWAITS! 🐉</span>
-            <span class="banner-spacer">☯️☯️☯️</span>
-            <span class="banner-text">🏮 COLLECT YIN YANG FOR FREE SPINS! 🏮</span>
-            <span class="banner-spacer">☯️☯️☯️</span>
-            <span class="banner-text">🥇 GOLD INGOTS UNLOCK GRAND JACKPOT! 🥇</span>
-            <span class="banner-spacer">☯️☯️☯️</span>
-            <span class="banner-text">🐉 LUCKY FORTUNE AWAITS! 🐉</span>
-            <span class="banner-spacer">☯️☯️☯️</span>
-          </div>
+    <!-- Main Title Section -->
+    <div class="title-section">
+      <div class="train-deco train-left">🚂</div>
+      <div class="main-title">
+        <h1 class="all-aboard-title">ALL ABOARD</h1>
+        <span class="tm-symbol">TM</span>
+      </div>
+      <div class="train-deco train-right">🚂</div>
+    </div>
+
+    <!-- Bonus Amounts -->
+    <div class="bonus-amounts-section">
+      <div class="bonus-box mega-bonus">
+        <div class="bonus-label">MEGA BONUS</div>
+        <div class="bonus-value" id="mega-bonus">$4,000</div>
+      </div>
+      <div class="bonus-box maxi-bonus">
+        <div class="bonus-label">MAXI BONUS</div>
+        <div class="bonus-value" id="maxi-bonus">$1,000</div>
+      </div>
+      <div class="bonus-box major-bonus">
+        <div class="bonus-label">MAJOR BONUS</div>
+        <div class="bonus-value" id="major-bonus">$200</div>
+      </div>
+      <div class="bonus-box mini-bonus">
+        <div class="bonus-label">MINI BONUS</div>
+        <div class="bonus-value" id="mini-bonus">$100</div>
+      </div>
+    </div>
+
+    <!-- Character and Secondary Title Section -->
+    <div class="character-section">
+      <div class="miner-character">
+        <div class="miner-image">⛏️👨</div>
+        <div class="lantern-glow"></div>
+      </div>
+      <div class="secondary-title-section">
+        <h2 class="dynamite-dash-title">
+          DYNAMITE DASH
+          <span class="dynamite-icon">💣</span>
+          <span class="tm-symbol-small">TM</span>
+        </h2>
+        <div class="feature-trigger-text">
+          ANY 3 <span class="dynamite-symbol">💣</span> TRIGGER THE FREE GAME FEATURE
+        </div>
+        <div class="all-aboard-trigger-text">
+          ANY 6 OR MORE <span class="train-symbol">🚂</span> TRIGGER ALL ABOARD FEATURE
         </div>
       </div>
     </div>
 
-    <!-- Main Game Area -->
-    <div class="game-area">
-      <!-- Gold Frame with Reels -->
+    <!-- Game Reels Section -->
+    <div class="reels-section">
+      <div class="lines-indicator left">50 LINES</div>
       <div class="reel-frame">
-        <div class="frame-corner top-left"></div>
-        <div class="frame-corner top-right"></div>
-        <div class="frame-corner bottom-left"></div>
-        <div class="frame-corner bottom-right"></div>
-        
         <div class="reels-container">
           <div class="reel" id="reel-1">
             <div class="reel-strip"></div>
@@ -92,100 +93,50 @@
           </div>
         </div>
       </div>
+      <div class="lines-indicator right">50 LINES</div>
+    </div>
 
-      <!-- Info Bar -->
+    <!-- Control Panel -->
+    <div class="control-panel">
       <div class="info-bar">
-        <div class="info-buttons">
-          <button class="info-btn" id="sound-btn">
-            <span id="sound-icon">🔊</span>
-          </button>
-          <button class="info-btn" id="paytable-btn">
-            PAY<br>TABLE
-          </button>
-        </div>
         <div class="info-display">
           <span class="info-label">BALANCE</span>
           <span class="info-value" id="credits-display">$10.00</span>
         </div>
         <div class="info-display bet-display">
           <span class="info-label">BET</span>
-          <span class="info-value" id="bet-display">$0.26</span>
+          <span class="info-value" id="bet-display">$0.50</span>
         </div>
         <div class="info-display win-display">
           <span class="info-label">WIN</span>
           <span class="info-value" id="win-amount">$0.00</span>
         </div>
       </div>
-
-      <!-- Control Panel -->
-      <div class="control-panel">
-        <button class="metal-btn lobby-btn" id="cash-out-btn">
-          <span class="btn-label">LOBBY</span>
+      
+      <div class="button-panel">
+        <button class="info-btn" id="sound-btn">
+          <span id="sound-icon">🔊</span>
         </button>
-        
-        <button class="metal-btn lines-btn" id="lines-4">
-          <span class="lines-num">4</span>
-          <span class="lines-text">LINES</span>
+        <button class="info-btn" id="paytable-btn">
+          PAY<br>TABLE
         </button>
-        <button class="metal-btn lines-btn" id="lines-8">
-          <span class="lines-num">8</span>
-          <span class="lines-text">LINES</span>
-        </button>
-        <button class="metal-btn lines-btn" id="lines-14">
-          <span class="lines-num">14</span>
-          <span class="lines-text">LINES</span>
-        </button>
-        <button class="metal-btn lines-btn" id="lines-20">
-          <span class="lines-num">20</span>
-          <span class="lines-text">LINES</span>
-        </button>
-        <button class="metal-btn lines-btn active" id="lines-26">
-          <span class="lines-num">26</span>
-          <span class="lines-text">LINES</span>
-        </button>
-        
         <button class="metal-btn spin-btn" id="spin-btn">
           <span class="btn-label">SPIN</span>
         </button>
-      </div>
-    </div>
-
-    <!-- Bottom Section - Recent Wins -->
-    <div class="bottom-section">
-      <div class="recent-wins">
-        <div class="section-header">
-          <span class="header-text">🏆 RECENT FORTUNES 🏆</span>
-        </div>
-        <div class="wins-grid" id="wins-carousel">
-          <div class="win-card">
-            <div class="win-prize">$888.00</div>
-            <div class="win-time">5 mins ago</div>
-            <div class="win-player">Lucky ***88</div>
-          </div>
-          <div class="win-card">
-            <div class="win-prize">$168.00</div>
-            <div class="win-time">12 mins ago</div>
-            <div class="win-player">Fortune ***66</div>
-          </div>
-          <div class="win-card">
-            <div class="win-prize">$1,288.00</div>
-            <div class="win-time">18 mins ago</div>
-            <div class="win-player">Dragon ***88</div>
-          </div>
-          <div class="win-card">
-            <div class="win-prize">$388.00</div>
-            <div class="win-time">25 mins ago</div>
-            <div class="win-player">Phoenix ***18</div>
-          </div>
-        </div>
+        <button class="metal-btn lobby-btn" id="cash-out-btn">
+          <span class="btn-label">LOBBY</span>
+        </button>
       </div>
     </div>
 
     <!-- Hidden elements for compatibility -->
     <div id="win-display" style="display:none;"></div>
-    <div id="total-bet-display" style="display:none;">26</div>
-    <div id="lines-display" style="display:none;">26</div>
+    <div id="total-bet-display" style="display:none;">50</div>
+    <div id="lines-display" style="display:none;">50</div>
     <div id="jackpot-amount" style="display:none;">$10,000.00</div>
+    <div id="mega-jackpot" style="display:none;">$4,000</div>
+    <div id="major-jackpot" style="display:none;">$200</div>
+    <div id="minor-jackpot" style="display:none;">$100</div>
     <button id="demo-btn" style="display:none;"></button>
     <button id="bet-up-btn" style="display:none;"></button>
     <button id="bet-down-btn" style="display:none;"></button>
@@ -214,13 +165,23 @@
     <div class="free-spins-overlay" id="free-spins-overlay">
       <div class="free-spins-content">
         <div class="free-spins-particles"></div>
-        <div class="free-spins-dragon left">🐉</div>
-        <div class="free-spins-dragon right">🐉</div>
-        <h2 class="free-spins-title">🎰 FREE SPINS! 🎰</h2>
-        <div class="free-spins-awarded">8 FREE SPINS</div>
-        <div class="free-spins-multiplier">All wins x2!</div>
+        <h2 class="free-spins-title">💣 DYNAMITE DASH FREE SPINS! 💣</h2>
+        <div class="free-spins-awarded">9 FREE SPINS</div>
+        <div class="free-spins-multiplier">Increased Wilds!</div>
         <div class="free-spins-counter">SPINS: 0 / 0</div>
         <div class="free-spins-winnings">WON: $0.00</div>
+      </div>
+    </div>
+
+    <!-- All Aboard Feature Overlay -->
+    <div class="all-aboard-overlay" id="all-aboard-overlay">
+      <div class="all-aboard-content">
+        <div class="all-aboard-particles"></div>
+        <h2 class="all-aboard-title-overlay">🚂 ALL ABOARD! 🚂</h2>
+        <div class="all-aboard-spins">3 BONUS SPINS</div>
+        <div class="all-aboard-grid" id="all-aboard-grid"></div>
+        <div class="all-aboard-spins-remaining">SPINS: <span id="all-aboard-spins-count">3</span></div>
+        <div class="all-aboard-total-won">TOTAL WON: <span id="all-aboard-total">$0.00</span></div>
       </div>
     </div>
     
